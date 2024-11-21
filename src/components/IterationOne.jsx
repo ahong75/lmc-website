@@ -75,7 +75,7 @@ const IterationOne = () => {
           onClick={handleSend}
           className="bg-blue-500 text-white p-2 mt-2 rounded-lg"
         >
-          Send to ChatGPT
+          Send msg to ChatGPT
         </button>
       </div>
       <div className="mt-4">
