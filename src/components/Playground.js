@@ -1,28 +1,32 @@
 import React, { useState } from "react";
 
-const IterationOne = () => {
-  const [chat, setChat] = useState([]);
-  const [language, _setLanguage] = useState("Spanish");
-  const [situation, _setSituation] = useState("ordering food at a restaurant");
+const Playground = () => {
+  const [language, setLanguage] = useState("");
+  const [situation, setSituation] = useState("");
+  const [vocabList, setVocabList] = useState("");
+  const [grammarRule, setGrammarRule] = useState("");
   const [input, setInput] = useState("");
+  const [chat, setChat] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const setLanguage = (value) => {
-    _setLanguage(value);
-    setChat([]);
-  };
-
-  const setSituation = (value) => {
-    _setSituation(value);
-    setChat([]);
-  };
 
   const handleSend = async (e) => {
     e.preventDefault();
 
     if (!input) return;
 
-    const prompt = `You are a helpful language tutor. Converse in ${language} and act like you're ${situation}. Provide feedback on grammar and vocabulary.`;
+    const vocab = vocabList
+      .split(",")
+      .map((word) => word.trim())
+      .join(", ");
+    const prompt = `You are a helpful language tutor. Converse in ${
+      language || "English"
+    } and act like you're ${situation || "having a general conversation"}. ${
+      vocab ? `Tend to use the following vocabulary: ${vocab}.` : ""
+    } ${
+      grammarRule
+        ? `Ensure that your responses follow this grammar rule: ${grammarRule}.`
+        : ""
+    } Provide feedback on grammar and vocabulary.`;
 
     const messages = [...chat, { role: "user", content: input }];
     setLoading(true);
@@ -55,34 +59,42 @@ const IterationOne = () => {
   };
 
   return (
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-2">
-        Iteration 1: Setting Language and Context
-      </h2>
-      <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
+    <div className="bg-gray-50 p-4 rounded-lg shadow-md">
+      <div className="mb-4">
         <label className="block font-medium mb-1">Language:</label>
         <input
           type="text"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
           className="w-full border p-2 mb-4"
+          placeholder="e.g., Spanish"
         />
         <label className="block font-medium mb-1">Situation:</label>
         <input
           type="text"
           value={situation}
           onChange={(e) => setSituation(e.target.value)}
-          className="w-full border p-2"
+          className="w-full border p-2 mb-4"
+          placeholder="e.g., ordering food at a restaurant"
         />
-      </div>
-      <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
-        <h3 className="text-md font-semibold">Resulting Prompt:</h3>
-        <p>
-          You are a helpful language tutor. Converse in{" "}
-          <strong>{language}</strong> and act like you're{" "}
-          <strong>{situation}</strong>. Provide feedback on grammar and
-          vocabulary.
-        </p>
+        <label className="block font-medium mb-1">
+          Vocabulary List (comma-separated):
+        </label>
+        <input
+          type="text"
+          value={vocabList}
+          onChange={(e) => setVocabList(e.target.value)}
+          className="w-full border p-2 mb-4"
+          placeholder="e.g., comida, restaurante, mesero"
+        />
+        <label className="block font-medium mb-1">Grammar Rule:</label>
+        <input
+          type="text"
+          value={grammarRule}
+          onChange={(e) => setGrammarRule(e.target.value)}
+          className="w-full border p-2"
+          placeholder="e.g., Use only present tense verbs"
+        />
       </div>
       <form onSubmit={handleSend} className="mb-4">
         <label className="block font-medium mb-1">Your Input:</label>
@@ -103,7 +115,7 @@ const IterationOne = () => {
           Send
         </button>
       </form>
-      <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+      <div className="bg-white p-4 rounded-lg shadow-sm">
         <h3 className="text-md font-semibold">Chat Output:</h3>
         {chat.length > 0 ? (
           chat.map(({ role, content }, idx) => (
@@ -121,4 +133,4 @@ const IterationOne = () => {
   );
 };
 
-export default IterationOne;
+export default Playground;

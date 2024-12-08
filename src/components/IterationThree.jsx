@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
-const IterationOne = () => {
+const IterationThree = () => {
   const [chat, setChat] = useState([]);
   const [language, _setLanguage] = useState("Spanish");
   const [situation, _setSituation] = useState("ordering food at a restaurant");
+  const [grammarRule, _setGrammarRule] = useState("");
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -17,12 +18,17 @@ const IterationOne = () => {
     setChat([]);
   };
 
+  const setGrammarRule = (value) => {
+    _setGrammarRule(value);
+    setChat([]);
+  };
+
   const handleSend = async (e) => {
     e.preventDefault();
 
     if (!input) return;
 
-    const prompt = `You are a helpful language tutor. Converse in ${language} and act like you're ${situation}. Provide feedback on grammar and vocabulary.`;
+    const prompt = `You are a helpful language tutor. Converse in ${language} and act like you're ${situation}. Ensure that your responses follow this grammar rule: ${grammarRule}. Provide feedback on grammar and vocabulary.`;
 
     const messages = [...chat, { role: "user", content: input }];
     setLoading(true);
@@ -56,9 +62,7 @@ const IterationOne = () => {
 
   return (
     <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-2">
-        Iteration 1: Setting Language and Context
-      </h2>
+      <h2 className="text-xl font-semibold mb-2">Iteration 3: Grammar Rules</h2>
       <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
         <label className="block font-medium mb-1">Language:</label>
         <input
@@ -72,7 +76,15 @@ const IterationOne = () => {
           type="text"
           value={situation}
           onChange={(e) => setSituation(e.target.value)}
+          className="w-full border p-2 mb-4"
+        />
+        <label className="block font-medium mb-1">Grammar Rule:</label>
+        <input
+          type="text"
+          value={grammarRule}
+          onChange={(e) => setGrammarRule(e.target.value)}
           className="w-full border p-2"
+          placeholder="e.g., Use only past tense verbs"
         />
       </div>
       <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
@@ -80,8 +92,9 @@ const IterationOne = () => {
         <p>
           You are a helpful language tutor. Converse in{" "}
           <strong>{language}</strong> and act like you're{" "}
-          <strong>{situation}</strong>. Provide feedback on grammar and
-          vocabulary.
+          <strong>{situation}</strong>. Ensure that your responses follow this
+          grammar rule: <strong>{grammarRule || "(none)"}</strong>. Provide
+          feedback on grammar and vocabulary.
         </p>
       </div>
       <form onSubmit={handleSend} className="mb-4">
@@ -121,4 +134,4 @@ const IterationOne = () => {
   );
 };
 
-export default IterationOne;
+export default IterationThree;
